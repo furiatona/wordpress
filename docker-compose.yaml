@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+   traefik:
+    image: traefik:1.7
+    restart: always
+    command:
+      - --docker
+      - --api
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    container_name: traefik
+
+   database:
+     image: mysql:5.7
+     volumes:
+       - ./.data/mysql:/var/lib/mysql
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: x5RR6qsUmXZK9NTX
+       MYSQL_DATABASE: wordpress
+       MYSQL_USER: wordpress
+       MYSQL_PASSWORD: PASSWORD
+     container_name: database
+   
+   app:
+     depends_on:
+       - database
+     image: wordpress:5.1.1
+     deploy:
+      replicas: 3
+     ports:
+      - "7000-7002"
+     labels:
+      - "traefik.frontend.rule=PathPrefixStrip:/"
+     volumes:
+       - ./.data/app:/var/www/html
+     restart: always
+     environment:
+       WORDPRESS_DB_NAME: wordpress
+       WORDPRESS_DB_HOST: database:3306
+       WORDPRESS_DB_USER: wordpress
+       WORDPRESS_DB_PASSWORD: PASSWORD
+
+   
