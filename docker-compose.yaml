@@ -23,7 +23,7 @@ services:
        MYSQL_ROOT_PASSWORD: x5RR6qsUmXZK9NTX
        MYSQL_DATABASE: wordpress
        MYSQL_USER: wordpress
-       MYSQL_PASSWORD: PASSWORD
+       MYSQL_PASSWORD: sample_password
      container_name: database
    
    app:
