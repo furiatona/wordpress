@@ -29,7 +29,7 @@ services:
    app:
      depends_on:
        - database
-     image: wordpress:5.1.1
+     image: wordpress:6.0.0
      deploy:
       replicas: 3
      ports:
